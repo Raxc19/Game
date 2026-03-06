@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Host Sheet – Family Feud</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#080f20;--card:#0d1a38;--border:#1a3060;
+  --gold:#f0c040;--gold2:#ffd966;
+  --green:#0e6030;--green2:#1db954;
+  --red:#cc2020;--blue:#1a55cc;
+  --text:#e8eef8;--muted:#6a88bb;
+}
+html,body{background:var(--bg);font-family:'Oswald',sans-serif;color:var(--text);min-height:100vh;}
+
+/* HEADER */
+#hdr{
+  background:linear-gradient(135deg,#0a1a40,#1040a0);
+  border-bottom:3px solid var(--gold);
+  padding:16px 14px 12px;
+  text-align:center;
+  position:sticky;top:0;z-index:50;
+}
+#hdr h1{
+  font-size:1.5rem;letter-spacing:.18em;
+  color:var(--gold);text-transform:uppercase;
+}
+#hdr p{font-size:.72rem;color:#aabcdd;letter-spacing:.12em;margin-top:3px;}
+#progress{
+  display:flex;justify-content:center;gap:8px;margin-top:10px;flex-wrap:wrap;
+}
+.pq-btn{
+  font-family:'Oswald',sans-serif;font-size:.75rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  background:#0d2254;border:1px solid #2050a0;
+  color:#aabcdd;border-radius:20px;padding:4px 12px;
+  cursor:pointer;transition:all .2s;
+}
+.pq-btn.active{background:var(--gold);color:#000;border-color:var(--gold);}
+.pq-btn.done{background:var(--green);color:#fff;border-color:var(--green2);}
+
+/* QUESTIONS */
+#content{padding:12px 12px 32px;}
+
+.q-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  margin-bottom:14px;
+  overflow:hidden;
+  transition:border-color .2s;
+}
+.q-card.active-card{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold);}
+
+.q-head{
+  background:linear-gradient(135deg,#0d2254,#1040a0);
+  padding:12px 14px 10px;
+  cursor:pointer;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.q-num{
+  font-size:.65rem;letter-spacing:.3em;color:var(--gold);
+  text-transform:uppercase;white-space:nowrap;margin-top:2px;flex-shrink:0;
+}
+.q-info{flex:1;}
+.q-text{font-size:1rem;font-weight:600;line-height:1.35;color:#fff;}
+.q-skill{
+  display:inline-block;margin-top:5px;
+  background:rgba(240,192,64,.15);border:1px solid rgba(240,192,64,.35);
+  border-radius:4px;padding:1px 8px;
+  font-size:.65rem;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;
+}
+.q-pres{font-size:.65rem;letter-spacing:.08em;color:var(--muted);margin-top:3px;}
+.q-chevron{font-size:1rem;color:var(--muted);flex-shrink:0;transition:transform .2s;margin-top:2px;}
+.q-card.open .q-chevron{transform:rotate(180deg);}
+
+.q-answers{display:none;padding:8px 10px 10px;}
+.q-card.open .q-answers{display:block;}
+
+.ans-row{
+  display:flex;align-items:center;gap:0;
+  border-radius:8px;overflow:hidden;
+  margin-bottom:6px;
+  border:1px solid #1a3060;
+  cursor:pointer;
+  transition:opacity .2s;
+}
+.ans-row.struck{opacity:.35;}
+.ans-rank{
+  font-size:1.1rem;font-weight:700;
+  background:#0a1e50;color:var(--muted);
+  width:36px;text-align:center;
+  padding:10px 0;flex-shrink:0;
+  border-right:1px solid #1a3060;
+}
+.ans-text{
+  flex:1;font-size:.95rem;font-weight:500;
+  padding:10px 10px;color:#dde4f0;
+  line-height:1.2;
+}
+.ans-pts{
+  font-size:1.2rem;font-weight:700;
+  background:#0a1e50;color:var(--gold2);
+  width:52px;text-align:center;
+  padding:10px 0;flex-shrink:0;
+  border-left:1px solid #1a3060;
+}
+.ans-row.correct{
+  background:linear-gradient(135deg,#0a3a1a,#0d4a20);
+  border-color:var(--green2);
+}
+.ans-row.correct .ans-rank{background:#083014;color:#50e090;}
+.ans-row.correct .ans-pts{background:#083014;color:var(--gold2);}
+
+/* MARK BUTTONS */
+.mark-row{
+  display:flex;gap:6px;margin-top:4px;margin-bottom:2px;flex-wrap:wrap;
+}
+.mark-btn{
+  font-family:'Oswald',sans-serif;font-size:.72rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  border:none;border-radius:6px;padding:6px 12px;cursor:pointer;
+  transition:filter .15s,transform .1s;
+}
+.mark-btn:active{transform:scale(.96);}
+.mb-correct{background:var(--green);color:#fff;}
+.mb-wrong{background:var(--red);color:#fff;}
+.mb-reset{background:#1a2a4a;color:#aabcdd;border:1px solid #2a3a5a;}
+
+/* TALLY */
+.tally-bar{
+  background:#0a1428;border-top:1px solid #1a3060;
+  padding:8px 10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.tally-lbl{font-size:.65rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;}
+.tally-val{font-size:1.1rem;font-weight:700;color:var(--gold2);}
+.tally-max{font-size:.75rem;color:var(--muted);}
+
+/* FLOATING TOTAL */
+#total-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:linear-gradient(135deg,#0a1a40,#0d2254);
+  border-top:2px solid var(--gold);
+  padding:10px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:50;
+}
+.tot-team{text-align:center;flex:1;}
+.tot-lbl{font-size:.6rem;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;}
+.tot-pts{font-size:1.6rem;font-weight:700;color:var(--gold2);line-height:1;}
+#tot-divider{width:1px;background:#1a3060;align-self:stretch;margin:0 10px;}
+.tot-bank-wrap{text-align:center;flex:1;}
+.tot-bank-lbl{font-size:.6rem;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;}
+.tot-bank-val{font-size:1.6rem;font-weight:700;color:#fff;line-height:1;}
+</style>
+</head>
+<body>
+
+<div id="hdr">
+  <h1>🎤 HOST SHEET</h1>
+  <p>"Where Are You Going, Where Have You Been?"</p>
+  <div id="progress"></div>
+</div>
+
+<div id="content"></div>
+
+<div id="total-bar">
+  <div class="tot-team">
+    <div class="tot-lbl">Team 1</div>
+    <div class="tot-pts" id="tot-t1">0</div>
+  </div>
+  <div id="tot-divider"></div>
+  <div class="tot-bank-wrap">
+    <div class="tot-bank-lbl">Bank</div>
+    <div class="tot-bank-val" id="tot-bank">0</div>
+  </div>
+  <div id="tot-divider2" style="width:1px;background:#1a3060;align-self:stretch;margin:0 10px;"></div>
+  <div class="tot-team">
+    <div class="tot-lbl">Team 2</div>
+    <div class="tot-pts" id="tot-t2">0</div>
+  </div>
+</div>
+
+<script>
+const Qs = [
+  {
+    q: "Name something that CHANGES in the story's structure from the first half to the second half.",
+    skill: "STR 3.C — Function of Structure",
+    pres: "📋 Xavier's Skill",
+    a: [
+      {t:"Tone shifts from carefree to threatening", p:30},
+      {t:"Dialogue takes over — less description",   p:24},
+      {t:"Time slows to real-time pacing",           p:18},
+      {t:"Setting shrinks to just the doorway",      p:14},
+      {t:"Connie's sense of freedom disappears",     p:9},
+      {t:"Reader tension increases sharply",         p:5},
+    ]
+  },
+  {
+    q: "By the END of the story, how has Connie changed — or stayed the same?",
+    skill: "CHR 1.B — Character Changing or Unchanged",
+    pres: "📋 Nicole's Skill",
+    a: [
+      {t:"She loses all her confidence / bravado",        p:32},
+      {t:"She becomes aware of real danger",              p:26},
+      {t:"She sacrifices herself to protect her family",  p:18},
+      {t:"Her vanity is completely stripped away",        p:12},
+      {t:"She remains passive — never truly fights back", p:8},
+      {t:"She stays naive until the very last moment",    p:4},
+    ]
+  },
+  {
+    q: "Name a way Connie's own actions or speech reveal a HIDDEN complexity in her character.",
+    skill: "CHR 1.E — Character Choices Reveal Complexity",
+    pres: "📋 Dominic's Skill",
+    a: [
+      {t:"Acts mature in public, childish at home",        p:33},
+      {t:"Flirtatious but terrified when actually pursued",p:25},
+      {t:"Craves attention but can't handle consequences", p:17},
+      {t:"Ignores family yet won't abandon them at end",   p:12},
+      {t:"Uses music to escape — but it shapes her danger",p:8},
+      {t:"Bold laugh hides deep insecurity",               p:5},
+    ]
+  },
+  {
+    q: "Name something in the story that personifies or symbolizes a LARGER idea.",
+    skill: "FIG 6.C — Personification / FIG 5.C — Symbol",
+    pres: "📋 Nala's Skill",
+    a: [
+      {t:"Arnold Friend = the Devil / Death personified",     p:34},
+      {t:"The screen door = barrier between safety & danger", p:24},
+      {t:"Arnold's car = the predatory adult world",          p:17},
+      {t:"Music = false / dangerous romance",                 p:12},
+      {t:"Arnold's name anagram = 'An Old Fiend'",            p:9},
+      {t:"The open road = loss of innocence",                 p:4},
+    ]
+  },
+  {
+    q: "Name a conflict in the story and what LARGER idea it represents.",
+    skill: "STR 3.F — Function of Conflict",
+    pres: "📋 Jessica's Skill",
+    a: [
+      {t:"Innocence vs. real-world evil / predatory danger", p:31},
+      {t:"Connie vs. Arnold — power and control",            p:25},
+      {t:"Teen freedom vs. real-world consequences",         p:18},
+      {t:"Home identity vs. public identity",                p:13},
+      {t:"Family neglect vs. dangerous independence",        p:8},
+      {t:"Pop culture fantasy vs. harsh reality",            p:5},
+    ]
+  },
+  {
+    q: "Name a theme or WARNING message the story sends to readers.",
+    skill: "THEME — Overall Meaning of the Story",
+    pres: "📋 Bonus Round — Full Class",
+    a: [
+      {t:"Vanity and attention-seeking invite danger",  p:29},
+      {t:"Evil disguises itself as charm",              p:27},
+      {t:"Teen independence can turn fatal",            p:18},
+      {t:"Family bonds matter more than image",         p:13},
+      {t:"Pop culture gives false ideas of romance",    p:8},
+      {t:"Adults (predators) exploit naive youth",      p:5},
+    ]
+  },
+];
+
+// State per question: array of booleans (correct / wrong / neither)
+const state = Qs.map(q => ({
+  marks: new Array(q.a.length).fill(null), // null | 'correct' | 'wrong'
+  open: false
+}));
+
+let scores = [0, 0];
+let bank = 0;
+let activeQ = 0;
+
+function totalPoints(qIdx) {
+  const q = Qs[qIdx];
+  return state[qIdx].marks.reduce((sum, m, i) => m === 'correct' ? sum + q.a[i].p : sum, 0);
+}
+function maxPoints(qIdx) {
+  return Qs[qIdx].a.reduce((s, a) => s + a.p, 0);
+}
+
+function updateTotals() {
+  document.getElementById('tot-t1').textContent = scores[0];
+  document.getElementById('tot-t2').textContent = scores[1];
+  document.getElementById('tot-bank').textContent = bank;
+}
+
+function markAnswer(qIdx, aIdx, type) {
+  const prev = state[qIdx].marks[aIdx];
+  // toggle off if same
+  if (prev === type) {
+    if (type === 'correct') bank -= Qs[qIdx].a[aIdx].p;
+    state[qIdx].marks[aIdx] = null;
+  } else {
+    if (prev === 'correct') bank -= Qs[qIdx].a[aIdx].p;
+    if (type === 'correct') bank += Qs[qIdx].a[aIdx].p;
+    state[qIdx].marks[aIdx] = type;
+  }
+  updateTotals();
+  render();
+}
+
+function awardTo(team) {
+  scores[team - 1] += bank;
+  bank = 0;
+  updateTotals();
+  render();
+}
+
+function toggleQ(idx) {
+  state[idx].open = !state[idx].open;
+  activeQ = idx;
+  render();
+}
+
+function render() {
+  const content = document.getElementById('content');
+  const progress = document.getElementById('progress');
+
+  // Progress buttons
+  progress.innerHTML = Qs.map((q, i) => {
+    const done = state[i].marks.some(m => m !== null);
+    const active = i === activeQ && state[i].open;
+    return `<button class="pq-btn ${active ? 'active' : done ? 'done' : ''}" onclick="toggleQ(${i})">Q${i+1}</button>`;
+  }).join('');
+
+  // Cards
+  content.innerHTML = Qs.map((q, i) => {
+    const s = state[i];
+    const earned = totalPoints(i);
+    const max = maxPoints(i);
+
+    const answersHTML = q.a.map((a, j) => {
+      const m = s.marks[j];
+      return `
+        <div class="ans-row ${m === 'correct' ? 'correct' : m === 'wrong' ? 'struck' : ''}">
+          <div class="ans-rank">${j+1}</div>
+          <div class="ans-text">${a.t}</div>
+          <div class="ans-pts">${a.p}</div>
+        </div>
+        <div class="mark-row">
+          <button class="mark-btn mb-correct" onclick="markAnswer(${i},${j},'correct')">
+            ${s.marks[j]==='correct' ? '✓ Correct' : '✓ Mark Correct'}
+          </button>
+          <button class="mark-btn mb-wrong" onclick="markAnswer(${i},${j},'wrong')">
+            ${s.marks[j]==='wrong' ? '✕ Wrong' : '✕ Mark Wrong'}
+          </button>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="q-card ${s.open ? 'open' : ''} ${i === activeQ && s.open ? 'active-card' : ''}">
+        <div class="q-head" onclick="toggleQ(${i})">
+          <div class="q-num">Q${i+1}</div>
+          <div class="q-info">
+            <div class="q-text">${q.q}</div>
+            <div class="q-skill">${q.skill}</div>
+            <div class="q-pres">${q.pres}</div>
+          </div>
+          <div class="q-chevron">▼</div>
+        </div>
+        ${s.open ? `
+          <div class="q-answers">
+            ${answersHTML}
+          </div>
+          <div class="tally-bar">
+            <div class="tally-lbl">Bank:</div>
+            <div class="tally-val">${bank}</div>
+            <div class="tally-max">pts</div>
+            <div style="flex:1"></div>
+            <button class="mark-btn mb-correct" onclick="awardTo(1)">★ Team 1</button>
+            <button class="mark-btn" style="background:#bb2200;color:#fff" onclick="awardTo(2)">★ Team 2</button>
+          </div>
+        ` : `
+          <div class="tally-bar">
+            <div class="tally-lbl">Revealed:</div>
+            <div class="tally-val">${earned}</div>
+            <div class="tally-max">/ ${max} pts</div>
+          </div>
+        `}
+      </div>
+    `;
+  }).join('');
+
+  // scroll to active if needed
+  updateTotals();
+}
+
+// Open first question by default
+state[0].open = true;
+render();
+</script>
+</body>
+</html>
