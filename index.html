@@ -141,6 +141,71 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:200px;pointer
 #ovs{font-size:clamp(.9rem,2.2vw,1.35rem);letter-spacing:.15em;color:rgba(255,255,255,.75);margin-top:5px;}
 @keyframes ovA{0%{opacity:0;transform:scale(.4)}18%{opacity:1;transform:scale(1.08)}55%{opacity:1;transform:scale(1)}85%{opacity:1}100%{opacity:0;transform:scale(1)}}
 
+/* ── SUMMARY SCREEN ── */
+#summary{
+  position:fixed;inset:0;z-index:999;
+  background:radial-gradient(ellipse at 50% 30%,#0d2060 0%,#04091a 70%);
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  overflow-y:auto;
+}
+#sum-box{
+  max-width:720px;width:100%;
+  background:rgba(13,26,70,0.95);
+  border:2px solid var(--gold);
+  border-radius:16px;
+  padding:32px 28px 28px;
+  box-shadow:0 0 60px rgba(240,192,64,0.2), 0 20px 60px rgba(0,0,0,0.8);
+  text-align:center;
+}
+#sum-tag{
+  font-size:.7rem;letter-spacing:.45em;color:var(--gold);text-transform:uppercase;margin-bottom:6px;
+}
+#sum-title{
+  font-family:'Anton',sans-serif;
+  font-size:clamp(1.4rem,4vw,2.4rem);
+  color:#fff;line-height:1.1;margin-bottom:4px;
+}
+#sum-author{
+  font-size:.85rem;letter-spacing:.15em;color:#aabcdd;margin-bottom:20px;
+}
+#sum-divider{
+  height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);
+  margin:0 0 20px;
+}
+#sum-summary{
+  font-size:clamp(.9rem,1.8vw,1.05rem);line-height:1.75;
+  color:#d0d8ee;text-align:left;margin-bottom:22px;
+}
+#sum-summary p{margin-bottom:12px;}
+#sum-chars{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:24px;
+}
+.char-card{
+  background:#0a1e50;border:1px solid #1a3a80;
+  border-radius:8px;padding:8px 14px;text-align:center;
+  flex:1;min-width:130px;max-width:180px;
+}
+.char-name{
+  font-family:'Anton',sans-serif;font-size:1rem;
+  color:var(--gold2);letter-spacing:.08em;
+}
+.char-role{
+  font-size:.72rem;color:#7a9acc;margin-top:2px;letter-spacing:.06em;
+}
+#sum-start{
+  font-family:'Anton',sans-serif;font-size:1.3rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  background:linear-gradient(180deg,var(--gold2),var(--gold));
+  color:#000;border:none;border-radius:8px;
+  padding:14px 40px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(240,192,64,0.4);
+  transition:filter .2s,transform .1s;
+  width:100%;
+}
+#sum-start:hover{filter:brightness(1.1);}
+#sum-start:active{transform:scale(.97);}
+
 @media(max-width:620px){
   #stage{flex-direction:column;}
   .tp{width:100%;flex-direction:row;flex-wrap:wrap;gap:8px;}
@@ -150,6 +215,27 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:200px;pointer
 </style>
 </head>
 <body>
+<div id="summary">
+  <div id="sum-box">
+    <div id="sum-tag">AP Literature · Story Summary</div>
+    <div id="sum-title">"Where Are You Going, Where Have You Been?"</div>
+    <div id="sum-author">by Joyce Carol Oates · Published 1966</div>
+    <div id="sum-divider"></div>
+    <div id="sum-summary">
+      <p>Connie is a vain, 15-year-old girl living in suburban America who is obsessed with her looks and the attention of boys. She leads a double life — sweet and quiet at home, flirtatious and bold when out with friends at the local drive-in restaurant.</p>
+      <p>One Sunday, while her family is away at a barbecue, a strange gold car pulls into her driveway. The driver, Arnold Friend, is a mysteriously charming older man who claims to know everything about Connie and her life. He insists she come for a ride with him — and slowly, the encounter turns threatening and inescapable.</p>
+      <p>The story ends ambiguously as Connie, paralyzed with fear and unable to call for help, appears to surrender and walk out the door toward Arnold Friend — her fate left unknown. The story is widely read as an allegory for the loss of innocence, the danger of vanity, and the presence of evil disguised as charm.</p>
+    </div>
+    <div id="sum-chars">
+      <div class="char-card"><div class="char-name">Connie</div><div class="char-role">Protagonist · 15 years old · vain &amp; naive</div></div>
+      <div class="char-card"><div class="char-name">Arnold Friend</div><div class="char-role">Antagonist · mysterious · possibly the Devil</div></div>
+      <div class="char-card"><div class="char-name">Ellie Oscar</div><div class="char-role">Arnold's silent companion · sits in the car</div></div>
+      <div class="char-card"><div class="char-name">Connie's Family</div><div class="char-role">Mother, Father, Sister June · away at barbecue</div></div>
+    </div>
+    <button id="sum-start" onclick="document.getElementById('summary').style.display='none'">🎮 <div id="app">nbsp; LET'S PLAY!</button>
+  </div>
+</div>
+
 <div id="app">
 
   <div id="logo">
