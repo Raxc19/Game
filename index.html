@@ -194,14 +194,14 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:200px;pointer
   font-size:.72rem;color:#7a9acc;margin-top:2px;letter-spacing:.06em;
 }
 #sum-start{
-  font-family:'Anton',sans-serif;font-size:1.3rem;
+  font-family:'Anton',sans-serif;font-size:1.1rem;
   letter-spacing:.18em;text-transform:uppercase;
   background:linear-gradient(180deg,var(--gold2),var(--gold));
   color:#000;border:none;border-radius:8px;
-  padding:14px 40px;cursor:pointer;
+  padding:12px 36px;cursor:pointer;
   box-shadow:0 4px 20px rgba(240,192,64,0.4);
   transition:filter .2s,transform .1s;
-  width:100%;
+  width:auto;display:inline-block;
 }
 #sum-start:hover{filter:brightness(1.1);}
 #sum-start:active{transform:scale(.97);}
@@ -232,7 +232,7 @@ body::before{content:'';position:fixed;top:0;left:0;right:0;height:200px;pointer
       <div class="char-card"><div class="char-name">Ellie Oscar</div><div class="char-role">Arnold's silent companion · sits in the car</div></div>
       <div class="char-card"><div class="char-name">Connie's Family</div><div class="char-role">Mother, Father, Sister June · away at barbecue</div></div>
     </div>
-    <button id="sum-start" onclick="document.getElementById('summary').style.display='none'">🎮 <div id="app">nbsp; LET'S PLAY!</button>
+    <button id="sum-start" onclick="document.getElementById('summary').style.display='none'">🎮 &nbsp; LET'S PLAY!</button>
   </div>
 </div>
 
